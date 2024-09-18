@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pistol : MonoBehaviour
+public class Guns : MonoBehaviour
 {
 
-    public static bool pis_equ = true;
+    public bool pis_equ = true;
+    public bool shot_equ = false;
+    public bool rock_equ = false;
+    public bool cross_equ = false;
     public int dame;
     public float range;
     public Transform pis;
+
+    public GameObject ply;
+    public GameObject ene;
 
     public GameObject hit_ef;
     public GameObject hit_ef_e;
@@ -57,18 +63,32 @@ public class Pistol : MonoBehaviour
             StartCoroutine(trail(spw_trl, hit.point));
             Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
 
-            if (ene1 != null) {
-                ene1.damege(dame);
-                GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(inpc_e, 2f);
+            if (Vector3.Distance(ply.transform.position, ene.transform.position) < 5f)
+            {
+                if (ene1 != null)
+                {
+                    ene1.damege(dame);
+                    GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(inpc_e, 2f);
+                }
             }
-            
+            else if (Vector3.Distance(ply.transform.position, ene.transform.position) > 5f)
+            {
+                if (ene1 != null)
+                {
+                    ene1.damege(dame/2);
+                    GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(inpc_e, 2f);
+                }
+            }
+
             else
             {
                 GameObject inpc = Instantiate(hit_ef, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(inpc, 2f);
             }
             Debug.Log("ya hit it m8");
+            Debug.Log(dame);
         }
         else
         {

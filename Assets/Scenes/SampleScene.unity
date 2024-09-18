@@ -7565,9 +7565,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f668a96d2af5bfc4da28f5a39baff9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pis_equ: 1
+  shot_equ: 0
+  rock_equ: 0
+  cross_equ: 0
   dame: 1
   range: 1000
   pis: {fileID: 1803268923}
+  ply: {fileID: 1271652437}
+  ene: {fileID: 1643403025}
   hit_ef: {fileID: 8111305985323994423, guid: 9fae2fbe36020bb42b851b0e4990a9d2, type: 3}
   hit_ef_e: {fileID: 8111305985323994423, guid: 149d9d64079f8d14bb79be21815673f0, type: 3}
   bul_speed: 100
