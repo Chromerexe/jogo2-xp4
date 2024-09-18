@@ -14,8 +14,10 @@ public class Pistol : MonoBehaviour
     public GameObject hit_ef_e;
     public RaycastHit hit;
 
+    public int bul_speed;
+
     public TrailRenderer trl;
-    TrailRenderer spw_trl;
+    
 
     public ParticleSystem muzf;
 
@@ -24,6 +26,7 @@ public class Pistol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         bool fired = false;
         float timer = 0;
         
@@ -33,9 +36,13 @@ public class Pistol : MonoBehaviour
             {
                 muzf.Play();
                 shot();
+                
+                fired = true;
+                
             }
         }
         
+
 
         //Debug.Log(timer);
         //Debug.Log(fired);
@@ -45,9 +52,9 @@ public class Pistol : MonoBehaviour
     {
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
-            spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
-            StartCoroutine(trail(spw_trl));
-            
+
+            TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
+            StartCoroutine(trail(spw_trl, hit.point));
             Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
 
             if (ene1 != null) {
@@ -63,17 +70,24 @@ public class Pistol : MonoBehaviour
             }
             Debug.Log("ya hit it m8");
         }
+        else
+        {
+            TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
+            StartCoroutine(trail(spw_trl, pis.transform.position + pis.transform.forward * 50));
+        }
     }
 
-    IEnumerator trail(TrailRenderer t)
+    IEnumerator trail(TrailRenderer t, Vector3 dir)
     {
-        float distance = Vector3.Distance(t.transform.position, hit.point);
+        Vector3 Startpos = t.transform.position;
+        //var step = bul_speed * Time.deltaTime;
+        float distance = Vector3.Distance(pis.transform.position, hit.point);
         float Rdis = distance;
-        if (Rdis > 0)
-        {
-            t.transform.position = Vector3.MoveTowards(pis.position, hit.point, 10);
-            Rdis -= 1 *Time.deltaTime;
+        while (Rdis > 0) {
+            t.transform.position = Vector3.Lerp(Startpos, dir, 1 - (Rdis / distance));
+            Rdis -= bul_speed * Time.deltaTime;
             yield return null;
         }
+        Destroy(t.gameObject, trl.time);
     }
 }
