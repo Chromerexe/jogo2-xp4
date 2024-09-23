@@ -5,9 +5,9 @@ using UnityEngine;
 public class Smol_ene : MonoBehaviour
 {
 
-    public int life = 20;
+    public float life = 20;
 
-    public void damege(int dam)
+    public void damege(float dam)
     {
         life -= dam;
         if(life <= 0)
