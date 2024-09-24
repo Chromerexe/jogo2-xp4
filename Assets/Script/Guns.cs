@@ -14,20 +14,12 @@ public class Guns : MonoBehaviour
     public float dame;
     public float range;
 
-    public Transform pis;
-    public Transform sho;
-    public Transform rkt;
-    public Transform cro;
-
     public GameObject pistol;
     public GameObject shotgun;
     public GameObject rocket;
     public GameObject crossbow;
 
-    public RawImage p;
-    public RawImage s;
-    public RawImage r;
-    public RawImage c;
+    public RawImage[] Crosshair;
 
     public int bullet_amount;
 
@@ -52,9 +44,10 @@ public class Guns : MonoBehaviour
         shotgun.SetActive(false);
         crossbow.SetActive(false);
         rocket.SetActive(false);
-        s.gameObject.SetActive(false);
-        c.gameObject.SetActive(false);
-        r.gameObject.SetActive(false);
+        for (int i = 0; i < 4; i++)
+        {
+            Crosshair[i].gameObject.SetActive(false);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -84,7 +77,7 @@ public class Guns : MonoBehaviour
         float timer = 0;
         
         if (pis_equ) {
-            pis.rotation = cam.transform.rotation;
+            pistol.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <=0 && !fired)
             {
                 muzf[0].Play();
@@ -92,7 +85,7 @@ public class Guns : MonoBehaviour
             }
         }
         if (shot_equ) {
-            sho.rotation = cam.transform.rotation;
+            shotgun.transform.rotation = cam.transform.rotation;
             for (int i = 0; i < bullet_amount; i++) {
                 if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
                 {
@@ -102,7 +95,7 @@ public class Guns : MonoBehaviour
             }
         }
         if (rock_equ) {
-            rkt.rotation = cam.transform.rotation;
+            rocket.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
             {
                 muzf[2].Play();
@@ -111,7 +104,7 @@ public class Guns : MonoBehaviour
         }
         if (cross_equ)
         {
-            cro.rotation = cam.transform.rotation;
+            crossbow.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
             {
                 
@@ -135,7 +128,7 @@ public class Guns : MonoBehaviour
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
             {
 
-                TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
+                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
                 StartCoroutine(trail(spw_trl, hit.point));
                 Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
 
@@ -173,8 +166,8 @@ public class Guns : MonoBehaviour
             }
             else
             {
-                TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
-                StartCoroutine(trail(spw_trl, pis.transform.position + pis.transform.forward * 50));
+                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
+                StartCoroutine(trail(spw_trl, pistol.transform.position + pistol.transform.forward * 50));
             }
         }
         if (shot_equ)
@@ -188,7 +181,7 @@ public class Guns : MonoBehaviour
             if (Physics.Raycast(cam.transform.position, dir, out hit, range))
             {
 
-                TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
+                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
                 StartCoroutine(trail(spw_trl, hit.point));
                 Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
                 if (ene1 != null)
@@ -225,8 +218,8 @@ public class Guns : MonoBehaviour
             }
             else
             {
-                TrailRenderer spw_trl = Instantiate(trl, pis.transform.position, pis.transform.rotation);
-                StartCoroutine(trail(spw_trl, pis.transform.position + pis.transform.forward * 50));
+                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
+                StartCoroutine(trail(spw_trl, pistol.transform.position + pistol.transform.forward * 50));
             }
         }
         if (cross_equ) { }
@@ -237,7 +230,7 @@ public class Guns : MonoBehaviour
     {
         Vector3 Startpos = t.transform.position;
         //var step = bul_speed * Time.deltaTime;
-        float distance = Vector3.Distance(pis.transform.position, hit.point);
+        float distance = Vector3.Distance(pistol.transform.position, hit.point);
         float Rdis = distance;
         while (Rdis > 0) {
             t.transform.position = Vector3.Lerp(Startpos, dir, 1 - (Rdis / distance));
@@ -249,19 +242,19 @@ public class Guns : MonoBehaviour
 
     IEnumerator crosshair()
     {
-        p.transform.localScale = new Vector3(p.transform.localScale.x * 1.2f, p.transform.localScale.y * 1.2f, p.transform.localScale.z * 1.2f);
+        Crosshair[0].transform.localScale = new Vector3(Crosshair[0].transform.localScale.x * 1.2f, Crosshair[0].transform.localScale.y * 1.2f, Crosshair[0].transform.localScale.z * 1.2f);
         yield return new WaitForSeconds(0.2f);
-        p.transform.localScale = new Vector3(p.transform.localScale.x / 1.2f, p.transform.localScale.y / 1.2f, p.transform.localScale.z / 1.2f);
+        Crosshair[0].transform.localScale = new Vector3(Crosshair[0].transform.localScale.x / 1.2f, Crosshair[0].transform.localScale.y / 1.2f, Crosshair[0].transform.localScale.z / 1.2f);
     }
 
     void weapon_selected(int sel)
     {
 
         if (sel == 1) {
-            p.gameObject.SetActive(true);
-            s.gameObject.SetActive(false);
-            c.gameObject.SetActive(false);
-            r.gameObject.SetActive(false);
+            Crosshair[0].gameObject.SetActive(true);
+            Crosshair[1].gameObject.SetActive(false);
+            Crosshair[3].gameObject.SetActive(false);
+            Crosshair[2].gameObject.SetActive(false);
             pistol.SetActive(true);
             shotgun.SetActive(false);
             crossbow.SetActive(false);
@@ -273,10 +266,10 @@ public class Guns : MonoBehaviour
         }
         else if (sel == 2)
         {
-            p.gameObject.SetActive(false);
-            s.gameObject.SetActive(true);
-            c.gameObject.SetActive(false);
-            r.gameObject.SetActive(false);
+            Crosshair[0].gameObject.SetActive(false);
+            Crosshair[1].gameObject.SetActive(true);
+            Crosshair[3].gameObject.SetActive(false);
+            Crosshair[2].gameObject.SetActive(false);
             pistol.SetActive(false);
             shotgun.SetActive(true);
             crossbow.SetActive(false);
@@ -288,10 +281,10 @@ public class Guns : MonoBehaviour
         }
         else if (sel == 3)
         {
-            p.gameObject.SetActive(false);
-            s.gameObject.SetActive(false);
-            c.gameObject.SetActive(false);
-            r.gameObject.SetActive(true);
+            Crosshair[0].gameObject.SetActive(false);
+            Crosshair[1].gameObject.SetActive(false);
+            Crosshair[3].gameObject.SetActive(false);
+            Crosshair[2].gameObject.SetActive(true);
             pistol.SetActive(false);
             shotgun.SetActive(false);
             crossbow.SetActive(false);
@@ -303,10 +296,10 @@ public class Guns : MonoBehaviour
         }
         else if (sel == 4)
         {
-            p.gameObject.SetActive(false);
-            s.gameObject.SetActive(false);
-            c.gameObject.SetActive(true);
-            r.gameObject.SetActive(false);
+            Crosshair[0].gameObject.SetActive(false);
+            Crosshair[1].gameObject.SetActive(false);
+            Crosshair[3].gameObject.SetActive(true);
+            Crosshair[2].gameObject.SetActive(false);
             pistol.SetActive(false);
             shotgun.SetActive(false);
             crossbow.SetActive(true);

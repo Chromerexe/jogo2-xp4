@@ -6163,13 +6163,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.5689198, y: -0.33604965, z: -0.056135945, w: 0.7484983}
+  m_LocalPosition: {x: -1.39, y: 5.34, z: 2.42}
+  m_LocalScale: {x: 1, y: 1, z: -0.041961912}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 125.517, y: 102.607, z: 126.598}
 --- !u!1 &750120587
 GameObject:
   m_ObjectHideFlags: 0
@@ -12784,18 +12784,15 @@ MonoBehaviour:
   cross_equ: 0
   dame: 2
   range: 1000
-  pis: {fileID: 1803268923}
-  sho: {fileID: 1482303934}
-  rkt: {fileID: 1040085524}
-  cro: {fileID: 1551988044}
   pistol: {fileID: 1803268922}
   shotgun: {fileID: 1482303933}
   rocket: {fileID: 1040085523}
   crossbow: {fileID: 1551988043}
-  p: {fileID: 955512522}
-  s: {fileID: 1561103478}
-  r: {fileID: 1042879850}
-  c: {fileID: 570298259}
+  Crosshair:
+  - {fileID: 955512522}
+  - {fileID: 1561103478}
+  - {fileID: 1042879850}
+  - {fileID: 570298259}
   bullet_amount: 9
   ply: {fileID: 1271652437}
   ene: {fileID: 1643403025}
@@ -19114,8 +19111,8 @@ Transform:
   m_GameObject: {fileID: 1758434919}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.44497746, w: 0.8955418}
-  m_LocalPosition: {x: 13.09, y: 2.08, z: 8.57}
-  m_LocalScale: {x: 1, y: 7.767, z: 4.6127}
+  m_LocalPosition: {x: 13.09, y: 2.08, z: 7.19}
+  m_LocalScale: {x: 1, y: 7.767, z: 5.790298}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
