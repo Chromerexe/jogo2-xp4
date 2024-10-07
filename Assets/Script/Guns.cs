@@ -14,6 +14,8 @@ public class Guns : MonoBehaviour
     public float dame;
     public float range;
 
+    public Rigidbody rb;
+
     public GameObject pistol;
     public GameObject shotgun;
     public GameObject rocket;
@@ -25,6 +27,9 @@ public class Guns : MonoBehaviour
 
     public GameObject ply;
     public GameObject ene;
+
+    public GameObject rkt_Proj;
+    public GameObject dart_proj;
 
     public GameObject hit_ef;
     public GameObject hit_ef_e;
@@ -52,7 +57,7 @@ public class Guns : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        rb.velocity = transform.forward * 40;
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
             wpn_sel -= 1;
@@ -77,7 +82,6 @@ public class Guns : MonoBehaviour
         float timer = 0;
         
         if (pis_equ) {
-            pistol.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <=0 && !fired)
             {
                 muzf[0].Play();
@@ -138,7 +142,7 @@ public class Guns : MonoBehaviour
                     {
                         if (ene1 != null)
                         {
-                            ene1.damege(dame);
+                            Smol_ene.life -= dame;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame);
@@ -149,7 +153,7 @@ public class Guns : MonoBehaviour
 
                         if (ene1 != null)
                         {
-                            ene1.damege(dame / 2);
+                            Smol_ene.life -= dame/2;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame / 2);
@@ -190,7 +194,7 @@ public class Guns : MonoBehaviour
                     {
                         if (ene1 != null)
                         {
-                            ene1.damege(dame);
+                            Smol_ene.life -= dame;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame);
@@ -201,7 +205,7 @@ public class Guns : MonoBehaviour
 
                         if (ene1 != null)
                         {
-                            ene1.damege(dame / 2);
+                            Smol_ene.life -= dame / 2;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame / 2);
@@ -222,8 +226,16 @@ public class Guns : MonoBehaviour
                 StartCoroutine(trail(spw_trl, pistol.transform.position + pistol.transform.forward * 50));
             }
         }
-        if (cross_equ) { }
-        if (rock_equ) { }
+        if (cross_equ) {
+            GameObject proj_c = Instantiate(dart_proj, cam.transform.position, cam.transform.rotation);
+            proj_c.GetComponent<Rigidbody>().AddForce(cam.transform.forward * 40, ForceMode.Impulse);
+            Destroy(proj_c, 2f);
+        }
+        if (rock_equ) {
+            GameObject proj_R = Instantiate(rkt_Proj, cam.transform.position, cam.transform.rotation);
+            proj_R.GetComponent<Rigidbody>().AddForce(cam.transform.forward * 40, ForceMode.Impulse);
+            Destroy(proj_R, 2f);
+        }
     }
 
     IEnumerator trail(TrailRenderer t, Vector3 dir)

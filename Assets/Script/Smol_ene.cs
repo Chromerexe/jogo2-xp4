@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Smol_ene : MonoBehaviour
 {
+    public static float life = 20;
 
-    public float life = 20;
-
-    public void damege(float dam)
+    private void Update()
     {
-        life -= dam;
-        if(life <= 0)
+        if (life <= 0)
         {
             Destroy(gameObject);
         }

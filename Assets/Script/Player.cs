@@ -13,9 +13,6 @@ public class Player : MonoBehaviour
     public static bool ply_ded = false;
 
     public Transform ply;
-    bool ismoving = false;
-    bool sliding = false;
-    float slide_s = 2.0f;
 
     public static bool grn_card = false;
     public static bool blu_card = false;
@@ -42,9 +39,6 @@ public class Player : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        if (x != 0 || z != 0) { 
-            ismoving = true;
-        }
 
         Vector3 mov = transform.right * x + transform.forward * z;
 
