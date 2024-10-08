@@ -52,16 +52,5 @@ public class Player : MonoBehaviour
         vel_g.y += grav * Time.deltaTime;
 
         control.Move(vel_g * Time.deltaTime);
-
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            ply.localScale = new Vector3(ply.transform.localScale.x, ply.transform.localScale.y / 2, ply.transform.localScale.z);
-            vel /= 4;
-        }
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            ply.localScale = new Vector3(ply.transform.localScale.x, ply.transform.localScale.y * 2, ply.transform.localScale.z);
-            vel *= 4;
-        }
     }
 }

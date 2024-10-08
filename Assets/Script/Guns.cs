@@ -16,6 +16,8 @@ public class Guns : MonoBehaviour
 
     public Rigidbody rb;
 
+    public GameObject gun_p;
+    public GameObject gun_p2;
     public GameObject pistol;
     public GameObject shotgun;
     public GameObject rocket;
@@ -57,6 +59,8 @@ public class Guns : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        gun_p.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
+        gun_p2.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
         rb.velocity = transform.forward * 40;
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
@@ -89,7 +93,6 @@ public class Guns : MonoBehaviour
             }
         }
         if (shot_equ) {
-            shotgun.transform.rotation = cam.transform.rotation;
             for (int i = 0; i < bullet_amount; i++) {
                 if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
                 {
@@ -99,7 +102,6 @@ public class Guns : MonoBehaviour
             }
         }
         if (rock_equ) {
-            rocket.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
             {
                 muzf[2].Play();
@@ -108,10 +110,8 @@ public class Guns : MonoBehaviour
         }
         if (cross_equ)
         {
-            crossbow.transform.rotation = cam.transform.rotation;
             if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
             {
-                
                 shot();
             }
         }
@@ -129,10 +129,10 @@ public class Guns : MonoBehaviour
             
             StartCoroutine(crosshair());
             
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
+            if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range))
             {
 
-                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
+                TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
                 StartCoroutine(trail(spw_trl, hit.point));
                 Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
 
@@ -170,22 +170,22 @@ public class Guns : MonoBehaviour
             }
             else
             {
-                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
-                StartCoroutine(trail(spw_trl, pistol.transform.position + pistol.transform.forward * 50));
+                TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
+                StartCoroutine(trail(spw_trl, gun_p.transform.position + gun_p.transform.forward * 50));
             }
         }
         if (shot_equ)
         {
-            Vector3 dir = cam.transform.forward;
+            Vector3 dir = gun_p.transform.forward;
             Vector3 spread = Vector3.zero;
-            spread += cam.transform.up * Random.Range(-1f, 1f);
-            spread += cam.transform.right * Random.Range(-1f, 1f);
+            spread += gun_p.transform.up * Random.Range(-1f, 1f);
+            spread += gun_p.transform.right * Random.Range(-1f, 1f);
 
             dir += spread.normalized * Random.Range(0f, 0.2f);
-            if (Physics.Raycast(cam.transform.position, dir, out hit, range))
+            if (Physics.Raycast(gun_p.transform.position, dir, out hit, range))
             {
 
-                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
+                TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
                 StartCoroutine(trail(spw_trl, hit.point));
                 Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
                 if (ene1 != null)
@@ -222,18 +222,18 @@ public class Guns : MonoBehaviour
             }
             else
             {
-                TrailRenderer spw_trl = Instantiate(trl, pistol.transform.position, pistol.transform.rotation);
-                StartCoroutine(trail(spw_trl, pistol.transform.position + pistol.transform.forward * 50));
+                TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
+                StartCoroutine(trail(spw_trl, gun_p.transform.position + gun_p.transform.forward * 50));
             }
         }
         if (cross_equ) {
-            GameObject proj_c = Instantiate(dart_proj, cam.transform.position, cam.transform.rotation);
-            proj_c.GetComponent<Rigidbody>().AddForce(cam.transform.forward * 40, ForceMode.Impulse);
+            GameObject proj_c = Instantiate(dart_proj, gun_p.transform.position, cam.transform.rotation);
+            proj_c.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_c, 2f);
         }
         if (rock_equ) {
-            GameObject proj_R = Instantiate(rkt_Proj, cam.transform.position, cam.transform.rotation);
-            proj_R.GetComponent<Rigidbody>().AddForce(cam.transform.forward * 40, ForceMode.Impulse);
+            GameObject proj_R = Instantiate(rkt_Proj, gun_p.transform.position, cam.transform.rotation);
+            proj_R.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_R, 2f);
         }
     }
@@ -242,7 +242,7 @@ public class Guns : MonoBehaviour
     {
         Vector3 Startpos = t.transform.position;
         //var step = bul_speed * Time.deltaTime;
-        float distance = Vector3.Distance(pistol.transform.position, hit.point);
+        float distance = Vector3.Distance(gun_p.transform.position, hit.point);
         float Rdis = distance;
         while (Rdis > 0) {
             t.transform.position = Vector3.Lerp(Startpos, dir, 1 - (Rdis / distance));

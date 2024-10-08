@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +12,12 @@ public class Item_pickup_blu : MonoBehaviour
     public LayerMask ply;
 
     public Image item_ui;
+    public Image item_ui2;
 
     void Start()
     {
         item_ui.enabled = false;
+        item_ui2.enabled = false;
     }
 
     // Update is called once per frame
@@ -24,7 +27,16 @@ public class Item_pickup_blu : MonoBehaviour
         if (item_got)
         {
             Player.blu_card = true;
-            item_ui.enabled = true;
+            if (item_ui.color == Color.green)
+            {
+                item_ui2.color = Color.blue;
+                item_ui2.enabled = true;
+            }
+            else
+            {
+                item_ui.color = Color.blue;
+                item_ui.enabled = true;
+            }
             Destroy(this.gameObject);
         }
     }
