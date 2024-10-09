@@ -126,7 +126,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -147,3 +147,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explo: {fileID: 1373117705010557349, guid: 2ff0e86a3ca4a6f4a9111c026b49167e, type: 3}
+  ply:
+    serializedVersion: 2
+    m_Bits: 64
+  ene:
+    serializedVersion: 2
+    m_Bits: 128
+  explode_r: 20

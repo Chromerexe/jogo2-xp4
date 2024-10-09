@@ -11,6 +11,9 @@ public class Guns : MonoBehaviour
     public bool rock_equ = false;
     public bool cross_equ = false;
     int wpn_sel = 1;
+    int last_wpn = 1;
+    int last_wpn2;
+    bool wpn_curt_switch = false;
     public float dame;
     public float range;
 
@@ -62,23 +65,69 @@ public class Guns : MonoBehaviour
         gun_p.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
         gun_p2.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
         rb.velocity = transform.forward * 40;
-        if(Input.GetAxis("Mouse ScrollWheel") > 0f)
+        if(Input.GetAxis("Mouse ScrollWheel") > 0f && !wpn_curt_switch)
         {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
             wpn_sel -= 1;
+            wpn_curt_switch = false;
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f && !wpn_curt_switch)
         {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
             wpn_sel += 1;
-
+            wpn_curt_switch = false;
         }
 
-        if (wpn_sel < 1)
+        if (wpn_sel < 1 && !wpn_curt_switch)
         {
+            wpn_curt_switch = true;
             wpn_sel = 4;
+            wpn_curt_switch = false;
         }
-        else if (wpn_sel > 4)
+        else if (wpn_sel > 4 && !wpn_curt_switch)
         {
+            wpn_curt_switch = true;
             wpn_sel = 1;
+            wpn_curt_switch = false;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q) && !wpn_curt_switch)
+        {
+            wpn_curt_switch = true;
+            last_wpn2 = wpn_sel;
+            wpn_sel = last_wpn;
+            last_wpn = last_wpn2;
+            wpn_curt_switch = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !wpn_curt_switch)
+        {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
+            wpn_sel = 1;
+            wpn_curt_switch = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !wpn_curt_switch)
+        {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
+            wpn_sel = 2;
+            wpn_curt_switch = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && !wpn_curt_switch)
+        {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
+            wpn_sel = 3;
+            wpn_curt_switch = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4) && !wpn_curt_switch)
+        {
+            wpn_curt_switch = true;
+            last_wpn = wpn_sel;
+            wpn_sel = 4;
+            wpn_curt_switch = false;
         }
         weapon_selected(wpn_sel);
 
