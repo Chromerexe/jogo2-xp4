@@ -6,7 +6,7 @@ using UnityEngine.Timeline;
 public class Player : MonoBehaviour
 {
 
-    public static float life = 10;
+    public static float life = 20;
     public float vel = 0;
     public float Air_vel = 0;
     public float grav = 0;
@@ -28,10 +28,14 @@ public class Player : MonoBehaviour
     bool isgrnd;
     bool ismovin = false;
 
+    private Vector3 previousPosition;
+
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(ismovin);
+        Vector3 realVelocity = (transform.position - previousPosition) / Time.deltaTime;
+        previousPosition = transform.position;
+        //Debug.Log(Rocket_proj.explosion_hit);
         isgrnd = Physics.CheckSphere(grnd_c.position, grnd_d, grnd);
 
         if (isgrnd && vel_g.y < 0) {
@@ -40,11 +44,6 @@ public class Player : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
-        if (x > 0 || z > 0)
-        {
-            ismovin = true;
-        }
 
         Vector3 mov = transform.right * x + transform.forward * z;
 
@@ -60,9 +59,17 @@ public class Player : MonoBehaviour
         
         control.Move(vel_g * Time.deltaTime);
 
+        if (realVelocity.x == 0 && realVelocity.y > 0 && realVelocity.z == 0) { 
+            Rocket_proj.explosion_hit = false;
+        }
+
         if (Rocket_proj.explosion_hit)
         {
-            control.Move(transform.forward * 0.5f);
+            if(realVelocity.x > 0 || realVelocity.z > 0 && !control.isGrounded)
+            {
+                control.Move(transform.forward * 0.5f);
+            }
+            
         }
 
         if (control.isGrounded) {

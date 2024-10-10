@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Guns : MonoBehaviour
 {
+    public int pis_amm = 20;
+    public int shot_amm = 5;
+    public int rock_amm = 5;
+    public int cross_amm = 10;
 
     public bool pis_equ = true;
     public bool shot_equ = false;
@@ -29,6 +33,7 @@ public class Guns : MonoBehaviour
     public RawImage[] Crosshair;
 
     public int bullet_amount;
+    bool fired = false;
 
     public GameObject ply;
     public GameObject ene;
@@ -131,36 +136,47 @@ public class Guns : MonoBehaviour
         }
         weapon_selected(wpn_sel);
 
-        bool fired = false;
+        
         float timer = 0;
         
         if (pis_equ) {
-            if (Input.GetButtonDown("Fire1") && timer <=0 && !fired)
+            if (Input.GetButtonDown("Fire1") && timer <=0 && !fired && pis_amm > 0)
             {
+                pis_amm -= 1;
                 muzf[0].Play();
                 shot();
             }
         }
         if (shot_equ) {
-            for (int i = 0; i < bullet_amount; i++) {
-                if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
+            if(shot_amm > 0 && !fired)
+            {
+                if (Input.GetButtonDown("Fire1") && timer <= 0)
                 {
-                    muzf[1].Play();
-                    shot();
+                    shot_amm -= 1;
+                }
+                for (int i = 0; i < bullet_amount; i++)
+                {
+                    if (Input.GetButtonDown("Fire1") && timer <= 0)
+                    {
+                        muzf[1].Play();
+                        shot();
+                    }
                 }
             }
         }
         if (rock_equ) {
-            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
+            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired && rock_amm > 0)
             {
+                rock_amm -= 1;
                 muzf[2].Play();
                 shot();
             }
         }
         if (cross_equ)
         {
-            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired)
+            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired && cross_amm > 0)
             {
+                cross_amm -= 1;
                 shot();
             }
         }
@@ -175,7 +191,7 @@ public class Guns : MonoBehaviour
     {
         if (pis_equ)
         {
-            
+            fired = true;
             StartCoroutine(crosshair());
             
             if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range))
@@ -222,9 +238,11 @@ public class Guns : MonoBehaviour
                 TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
                 StartCoroutine(trail(spw_trl, gun_p.transform.position + gun_p.transform.forward * 50));
             }
+            StartCoroutine(cool_dwn());
         }
         if (shot_equ)
         {
+            fired = true;
             Vector3 dir = gun_p.transform.forward;
             Vector3 spread = Vector3.zero;
             spread += gun_p.transform.up * Random.Range(-1f, 1f);
@@ -274,16 +292,21 @@ public class Guns : MonoBehaviour
                 TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
                 StartCoroutine(trail(spw_trl, gun_p.transform.position + gun_p.transform.forward * 50));
             }
+            StartCoroutine(cool_dwn());
         }
         if (cross_equ) {
+            fired = true;
             GameObject proj_c = Instantiate(dart_proj, gun_p.transform.position, cam.transform.rotation);
             proj_c.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_c, 2f);
+            StartCoroutine(cool_dwn());
         }
         if (rock_equ) {
+            fired = true;
             GameObject proj_R = Instantiate(rkt_Proj, gun_p.transform.position, cam.transform.rotation);
             proj_R.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_R, 2f);
+            StartCoroutine(cool_dwn());
         }
     }
 
@@ -369,6 +392,28 @@ public class Guns : MonoBehaviour
             shot_equ = false;
             rock_equ = false;
             cross_equ = true;
+        }
+    }
+    IEnumerator cool_dwn()
+    {
+        if (pis_equ) {
+            yield return new WaitForSeconds(0.2f);
+            fired = false;
+        }
+        if (shot_equ)
+        {
+            yield return new WaitForSeconds(1);
+            fired = false;
+        }
+        if (rock_equ)
+        {
+            yield return new WaitForSeconds(1);
+            fired = false;
+        }
+        if (cross_equ)
+        {
+            yield return new WaitForSeconds(0.3f);
+            fired = false;
         }
     }
 }

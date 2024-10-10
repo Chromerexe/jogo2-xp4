@@ -153,4 +153,4 @@ MonoBehaviour:
   ene:
     serializedVersion: 2
     m_Bits: 128
-  explode_r: 20
+  explode_r: 5

@@ -29,7 +29,13 @@ public class Rocket_proj : MonoBehaviour
 
         ParticleSystem exp = Instantiate(explo, transform.position, transform.rotation);
 
-        Destroy(exp,2f);
+        StartCoroutine(deleteall(exp));
         Destroy(gameObject);
+    }
+
+    IEnumerator deleteall(ParticleSystem ex)
+    {
+        yield return new WaitForSeconds(2);
+        Destroy(ex);
     }
 }
