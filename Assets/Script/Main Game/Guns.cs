@@ -1,10 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Guns : MonoBehaviour
 {
+
+    public PlayerInput ply_in;
+    public InputAction fire;
+    public InputAction skrl;
+    public InputAction chng_wpn1;
+    public InputAction chng_wpn2;
+    public InputAction chng_wpn3;
+    public InputAction chng_wpn4;
+    public InputAction last_wpn_in;
+
     public int pis_amm = 20;
     public int shot_amm = 5;
     public int rock_amm = 5;
@@ -56,6 +67,13 @@ public class Guns : MonoBehaviour
 
     void Start()
     {
+        fire = ply_in.actions["Fired"];
+        skrl = ply_in.actions["Scr_wpn"];
+        chng_wpn1 = ply_in.actions["Change_wpn1"];
+        chng_wpn2 = ply_in.actions["Change_wpn2"];
+        chng_wpn3 = ply_in.actions["Change_wpn3"];
+        chng_wpn4 = ply_in.actions["Change_wpn4"];
+        last_wpn_in = ply_in.actions["Last_wpn"];
         shotgun.SetActive(false);
         crossbow.SetActive(false);
         rocket.SetActive(false);
@@ -67,17 +85,25 @@ public class Guns : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool atiro = fire.WasPressedThisFrame();
+        Vector2 chng= skrl.ReadValue<Vector2>();
+        bool change_1 = chng_wpn1.WasPressedThisFrame();
+        bool change_2 = chng_wpn2.WasPressedThisFrame();
+        bool change_3 = chng_wpn3.WasPressedThisFrame();
+        bool change_4 = chng_wpn4.WasPressedThisFrame();
+        bool lst_wpn = last_wpn_in.WasPressedThisFrame();
+
         gun_p.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
         gun_p2.transform.rotation = new Quaternion(-cam.transform.rotation.x, -cam.transform.rotation.y, -cam.transform.rotation.z, -cam.transform.rotation.w);
         rb.velocity = transform.forward * 40;
-        if(Input.GetAxis("Mouse ScrollWheel") > 0f && !wpn_curt_switch)
+        if(chng.y > 0f && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
             wpn_sel -= 1;
             wpn_curt_switch = false;
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f && !wpn_curt_switch)
+        else if (chng.y < 0f && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
@@ -98,7 +124,7 @@ public class Guns : MonoBehaviour
             wpn_curt_switch = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.Q) && !wpn_curt_switch)
+        if(lst_wpn && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn2 = wpn_sel;
@@ -106,28 +132,28 @@ public class Guns : MonoBehaviour
             last_wpn = last_wpn2;
             wpn_curt_switch = false;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !wpn_curt_switch)
+        if (change_1 && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
             wpn_sel = 1;
             wpn_curt_switch = false;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && !wpn_curt_switch)
+        if (change_2 && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
             wpn_sel = 2;
             wpn_curt_switch = false;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && !wpn_curt_switch)
+        if (change_3 && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
             wpn_sel = 3;
             wpn_curt_switch = false;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4) && !wpn_curt_switch)
+        if (change_4 && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
@@ -140,7 +166,7 @@ public class Guns : MonoBehaviour
         float timer = 0;
         
         if (pis_equ) {
-            if (Input.GetButtonDown("Fire1") && timer <=0 && !fired && pis_amm > 0)
+            if (atiro && timer <=0 && !fired && pis_amm > 0)
             {
                 pis_amm -= 1;
                 muzf[0].Play();
@@ -150,13 +176,13 @@ public class Guns : MonoBehaviour
         if (shot_equ) {
             if(shot_amm > 0 && !fired)
             {
-                if (Input.GetButtonDown("Fire1") && timer <= 0)
+                if (atiro && timer <= 0)
                 {
                     shot_amm -= 1;
                 }
                 for (int i = 0; i < bullet_amount; i++)
                 {
-                    if (Input.GetButtonDown("Fire1") && timer <= 0)
+                    if (atiro && timer <= 0)
                     {
                         muzf[1].Play();
                         shot();
@@ -165,7 +191,7 @@ public class Guns : MonoBehaviour
             }
         }
         if (rock_equ) {
-            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired && rock_amm > 0)
+            if (atiro && timer <= 0 && !fired && rock_amm > 0)
             {
                 rock_amm -= 1;
                 muzf[2].Play();
@@ -174,7 +200,7 @@ public class Guns : MonoBehaviour
         }
         if (cross_equ)
         {
-            if (Input.GetButtonDown("Fire1") && timer <= 0 && !fired && cross_amm > 0)
+            if (atiro && timer <= 0 && !fired && cross_amm > 0)
             {
                 cross_amm -= 1;
                 shot();

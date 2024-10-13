@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Door_Animation_g : MonoBehaviour
 {
+    public InputAction open;
+    public PlayerInput ply_in;
 
     private Animator animator_g;
 
@@ -13,20 +16,22 @@ public class Door_Animation_g : MonoBehaviour
     void Start()
     {
         animator_g = GetComponent<Animator>();
+        open = ply_in.actions["Open"];
     }
 
     // Update is called once per frame
     void Update()
     {
+        bool opin = open.WasPressedThisFrame();
 
         if (animator_g != null && Player.grn_card)
         {
-            if (Input.GetKeyDown(KeyCode.E) && Door_green.plyin && opened_g)
+            if (opin && Door_green.plyin && opened_g)
             {
                 animator_g.SetTrigger("Close");
                 opened_g = false;
             }
-            else if (Input.GetKeyDown(KeyCode.E) && Door_green.plyin && !opened_g)
+            else if (opin && Door_green.plyin && !opened_g)
             {
                 animator_g.SetTrigger("Open");
                 opened_g = true;

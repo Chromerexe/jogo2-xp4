@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
 
 public class Player : MonoBehaviour
 {
+
+    public InputActionAsset actions;
+
+    public InputAction move;
+    public InputAction jump_in;
+    public PlayerInput ply_in;
 
     public static float life = 20;
     public float vel = 0;
@@ -30,9 +38,18 @@ public class Player : MonoBehaviour
 
     private Vector3 previousPosition;
 
+    private void Start()
+    {
+        move = ply_in.actions["Move"];
+        jump_in = ply_in.actions["Jump"];
+    }
+
     // Update is called once per frame
     void Update()
     {
+        Vector3 anda = move.ReadValue<Vector3>();
+        bool jumped = jump_in.WasPressedThisFrame();
+
         Vector3 realVelocity = (transform.position - previousPosition) / Time.deltaTime;
         previousPosition = transform.position;
         //Debug.Log(Rocket_proj.explosion_hit);
@@ -42,14 +59,14 @@ public class Player : MonoBehaviour
             vel_g.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = anda.x;
+        float z = anda.z;
 
         Vector3 mov = transform.right * x + transform.forward * z;
 
         control.Move(mov * vel * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isgrnd)
+        if (jumped && isgrnd)
         {
             vel_g.y = Mathf.Sqrt(jump * -2 * grav);
         }
@@ -75,5 +92,12 @@ public class Player : MonoBehaviour
         if (control.isGrounded) {
             Rocket_proj.explosion_hit = false;
         }
+    }
+
+    public void OnEnable()
+    {
+        var rebinds = PlayerPrefs.GetString("rebinds");
+        if (!string.IsNullOrEmpty(rebinds))
+            actions.LoadBindingOverridesFromJson(rebinds);
     }
 }

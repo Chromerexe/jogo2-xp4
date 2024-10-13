@@ -17,6 +17,8 @@ public class menu_cam : MonoBehaviour
 
     public TextMeshPro start;
 
+    public Options_menu opt;
+
     bool pressed = false;
 
     // Start is called before the first frame update
@@ -39,7 +41,7 @@ public class menu_cam : MonoBehaviour
             start_txt.SetBool("pressed", true);
             StartCoroutine(log());
         }
-        else if (Input.GetKey (KeyCode.Escape) && pressed) {
+        else if (Input.GetKey (KeyCode.Escape) && pressed && !opt.opt_menu_open) {
             pressed = false;
             start_txt.SetBool("pressed", false);
             butt_ani[0].SetBool("in", false);

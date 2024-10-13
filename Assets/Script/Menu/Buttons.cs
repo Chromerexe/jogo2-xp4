@@ -9,7 +9,6 @@ public class Buttons : MonoBehaviour
 
     public Animator panel;
 
-
     private void Start()
     {
         panel.gameObject.SetActive(false);
