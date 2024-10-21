@@ -9,13 +9,15 @@ public class Ene_shot : MonoBehaviour
     public GameObject gun_p;
     public GameObject gun_p2;
     public RaycastHit hit;
-    int range = 20;
+    int range = 200;
     public TrailRenderer trl;
     public int dame;
     public GameObject self;
     public GameObject ply;
     public GameObject hit_ef_e;
     public GameObject hit_ef;
+
+    public LayerMask ply_lm;
 
     public float timer = 0;
 
@@ -27,25 +29,24 @@ public class Ene_shot : MonoBehaviour
 
         if (Ene.saw)
         {
-            gun_p2.transform.rotation = Quaternion.RotateTowards(gun_p2.transform.rotation, ply.transform.rotation, 20);
+            //gun_p.transform.LookAt(ply.transform.position);
+            //gun_p2.transform.LookAt(ply.transform.position);
             timer += Time.deltaTime;
 
-            if (timer > 5)
+            if (timer > 1)
             {
-                bool fired = true;
 
-                if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range))
+                if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range, ply_lm))
                 {
 
                     TrailRenderer spw_trl = Instantiate(trl, gun_p2.transform.position, gun_p.transform.rotation);
                     StartCoroutine(trail(spw_trl, hit.point));
-                    Player ene1 = hit.transform.GetComponent<Player>();
 
-                    if (ene1 != null)
-                    {
-                        if (Vector3.Distance(self.transform.position, ene1.transform.position) < 15f)
+                    if(hit.transform.tag == "Player"){
+                        Debug.Log("lol");
+                        if (Vector3.Distance(self.transform.position, ply.transform.position) < 15f)
                         {
-                            if (ene1 != null)
+                            if (ply != null)
                             {
 
                                 Player.life -= dame;
@@ -53,10 +54,10 @@ public class Ene_shot : MonoBehaviour
                                 Destroy(inpc_e, 2f);
                             }
                         }
-                        else if (Vector3.Distance(self.transform.position, ene1.transform.position) > 15f)
+                        else if (Vector3.Distance(self.transform.position, ply.transform.position) > 15f)
                         {
 
-                            if (ene1 != null)
+                            if (ply != null)
                             {
                                 Player.life -= dame / 2;
                                 GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
@@ -65,11 +66,12 @@ public class Ene_shot : MonoBehaviour
                         }
                     }
 
-                    else
-                    {
+                    else{
                         GameObject inpc = Instantiate(hit_ef, hit.point, Quaternion.LookRotation(hit.normal));
                         Destroy(inpc, 2f);
                     }
+                    
+                    
                 }
                 else
                 {

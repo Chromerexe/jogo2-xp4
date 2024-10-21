@@ -20,6 +20,7 @@ public class Ene_atk : MonoBehaviour
     {
         if (ene.canseeplayer())
         {
+            
             saw = true;
         }
 
