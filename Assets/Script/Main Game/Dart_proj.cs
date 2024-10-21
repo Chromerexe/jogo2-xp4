@@ -12,7 +12,6 @@ public class Dart_proj : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
-            Smol_ene.life -= 5f;
             inpc_e = Instantiate(hit_ef_e, transform.position, transform.rotation);
             
         }

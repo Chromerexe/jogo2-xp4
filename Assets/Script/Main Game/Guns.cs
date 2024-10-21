@@ -21,6 +21,10 @@ public class Guns : MonoBehaviour
     public int rock_amm = 5;
     public int cross_amm = 10;
 
+    public static bool has_rkt = false;
+    public static bool has_cross = false;
+    public static int wpn_amount = 2;
+
     public bool pis_equ = true;
     public bool shot_equ = false;
     public bool rock_equ = false;
@@ -36,6 +40,7 @@ public class Guns : MonoBehaviour
 
     public GameObject gun_p;
     public GameObject gun_p2;
+    public GameObject gun_p3;
     public GameObject pistol;
     public GameObject shotgun;
     public GameObject rocket;
@@ -47,7 +52,6 @@ public class Guns : MonoBehaviour
     bool fired = false;
 
     public GameObject ply;
-    public GameObject ene;
 
     public GameObject rkt_Proj;
     public GameObject dart_proj;
@@ -65,8 +69,11 @@ public class Guns : MonoBehaviour
 
     public Camera cam;
 
+    public LayerMask enemy_mask; 
+
     void Start()
     {
+        
         fire = ply_in.actions["Fired"];
         skrl = ply_in.actions["Scr_wpn"];
         chng_wpn1 = ply_in.actions["Change_wpn1"];
@@ -117,7 +124,7 @@ public class Guns : MonoBehaviour
             wpn_sel = 4;
             wpn_curt_switch = false;
         }
-        else if (wpn_sel > 4 && !wpn_curt_switch)
+        else if (wpn_sel > wpn_amount && !wpn_curt_switch)
         {
             wpn_curt_switch = true;
             wpn_sel = 1;
@@ -146,14 +153,14 @@ public class Guns : MonoBehaviour
             wpn_sel = 2;
             wpn_curt_switch = false;
         }
-        if (change_3 && !wpn_curt_switch)
+        if (change_3 && !wpn_curt_switch && has_rkt)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
             wpn_sel = 3;
             wpn_curt_switch = false;
         }
-        if (change_4 && !wpn_curt_switch)
+        if (change_4 && !wpn_curt_switch && has_cross)
         {
             wpn_curt_switch = true;
             last_wpn = wpn_sel;
@@ -190,7 +197,7 @@ public class Guns : MonoBehaviour
                 }
             }
         }
-        if (rock_equ) {
+        if (rock_equ && has_rkt) {
             if (atiro && timer <= 0 && !fired && rock_amm > 0)
             {
                 rock_amm -= 1;
@@ -198,7 +205,7 @@ public class Guns : MonoBehaviour
                 shot();
             }
         }
-        if (cross_equ)
+        if (cross_equ && has_cross)
         {
             if (atiro && timer <= 0 && !fired && cross_amm > 0)
             {
@@ -220,7 +227,7 @@ public class Guns : MonoBehaviour
             fired = true;
             StartCoroutine(crosshair());
             
-            if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range))
+            if (Physics.Raycast(gun_p3.transform.position, gun_p3.transform.forward, out hit, range))
             {
 
                 TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
@@ -229,22 +236,22 @@ public class Guns : MonoBehaviour
 
                 if (ene1 != null)
                 {
-                    if (Vector3.Distance(ply.transform.position, ene.transform.position) < 15f)
+                    if (Vector3.Distance(ply.transform.position, ene1.transform.position) < 15f)
                     {
                         if (ene1 != null)
                         {
-                            Smol_ene.life -= dame;
+                            ene1.life -= dame;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame);
                         }
                     }
-                    else if (Vector3.Distance(ply.transform.position, ene.transform.position) > 15f)
+                    else if (Vector3.Distance(ply.transform.position, ene1.transform.position) > 15f)
                     {
 
                         if (ene1 != null)
                         {
-                            Smol_ene.life -= dame/2;
+                            ene1.life -= dame/2;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame / 2);
@@ -275,7 +282,7 @@ public class Guns : MonoBehaviour
             spread += gun_p.transform.right * Random.Range(-1f, 1f);
 
             dir += spread.normalized * Random.Range(0f, 0.2f);
-            if (Physics.Raycast(gun_p.transform.position, dir, out hit, range))
+            if (Physics.Raycast(gun_p3.transform.position, dir, out hit, range))
             {
 
                 TrailRenderer spw_trl = Instantiate(trl, gun_p.transform.position, cam.transform.rotation);
@@ -283,22 +290,22 @@ public class Guns : MonoBehaviour
                 Smol_ene ene1 = hit.transform.GetComponent<Smol_ene>();
                 if (ene1 != null)
                 {
-                    if (Vector3.Distance(ply.transform.position, ene.transform.position) < 15f)
+                    if (Vector3.Distance(ply.transform.position, ene1.transform.position) < 15f)
                     {
                         if (ene1 != null)
                         {
-                            Smol_ene.life -= dame;
+                            ene1.life -= dame;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame);
                         }
                     }
-                    else if (Vector3.Distance(ply.transform.position, ene.transform.position) > 15f)
+                    else if (Vector3.Distance(ply.transform.position, ene1.transform.position) > 15f)
                     {
 
                         if (ene1 != null)
                         {
-                            Smol_ene.life -= dame / 2;
+                            ene1.life -= dame / 2;
                             GameObject inpc_e = Instantiate(hit_ef_e, hit.point, Quaternion.LookRotation(hit.normal));
                             Destroy(inpc_e, 2f);
                             Debug.Log(dame / 2);
@@ -320,16 +327,16 @@ public class Guns : MonoBehaviour
             }
             StartCoroutine(cool_dwn());
         }
-        if (cross_equ) {
+        if (cross_equ && has_cross) {
             fired = true;
-            GameObject proj_c = Instantiate(dart_proj, gun_p.transform.position, cam.transform.rotation);
+            GameObject proj_c = Instantiate(dart_proj, gun_p3.transform.position, cam.transform.rotation);
             proj_c.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_c, 2f);
             StartCoroutine(cool_dwn());
         }
-        if (rock_equ) {
+        if (rock_equ && has_rkt) {
             fired = true;
-            GameObject proj_R = Instantiate(rkt_Proj, gun_p.transform.position, cam.transform.rotation);
+            GameObject proj_R = Instantiate(rkt_Proj, gun_p3.transform.position, cam.transform.rotation);
             proj_R.GetComponent<Rigidbody>().AddForce(gun_p.transform.forward * 40, ForceMode.Impulse);
             Destroy(proj_R, 2f);
             StartCoroutine(cool_dwn());

@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public PlayerInput ply_in;
 
     public static float life = 20;
+    public float lif;
     public float vel = 0;
     public float Air_vel = 0;
     public float grav = 0;
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        lif = life;
         Vector3 anda = move.ReadValue<Vector3>();
         bool jumped = jump_in.WasPressedThisFrame();
 

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1052776179227488103}
   m_Layer: 0
   m_Name: Rkt_prj
-  m_TagString: Untagged
+  m_TagString: Rocket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,3 +154,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   explode_r: 5
+  bleh: {fileID: 0}

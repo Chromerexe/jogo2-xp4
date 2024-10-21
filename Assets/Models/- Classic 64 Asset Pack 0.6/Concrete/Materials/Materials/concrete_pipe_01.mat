@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: wood_fancy_03
+  m_Name: concrete_pipe_01
   m_Shader: {fileID: 4800000, guid: 1ccecd9b89b8a4f14bfb64f29ddfcc81, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,9 +24,9 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 484a7806b42a3b3d289d87132dc30c6a, type: 3}
-        m_Scale: {x: 0.2, y: 0.2}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: 9e0e0d5779e902992802f2055934fe23, type: 3}
+        m_Scale: {x: 0.01, y: 2.24}
+        m_Offset: {x: -0.63, y: 0}
     m_Ints: []
     m_Floats:
     - _Glossiness: 0
