@@ -7,11 +7,12 @@ using UnityEngine.UIElements;
 public class Smol_ene : MonoBehaviour
 {
     public float life = 20;
-    public float sight_dis = 20f;
+    public float sight_dis = 500f;
     public float fov = 85f;
     public GameObject ply;
     public NavMeshAgent agent;
 
+    public GameObject presentation;
 
     private void Start()
     {
@@ -24,6 +25,11 @@ public class Smol_ene : MonoBehaviour
         if (life <= 0)
         {
             Destroy(gameObject);
+        }
+        if(canseeplayer() )
+        {
+            agent.speed = 30f;
+            transform.LookAt(ply.transform.position);
         }
     }
 

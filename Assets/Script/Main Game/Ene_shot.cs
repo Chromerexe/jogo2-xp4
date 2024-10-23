@@ -29,8 +29,6 @@ public class Ene_shot : MonoBehaviour
 
         if (Ene.saw)
         {
-            //gun_p.transform.LookAt(ply.transform.position);
-            //gun_p2.transform.LookAt(ply.transform.position);
             timer += Time.deltaTime;
 
             if (timer > 1)
@@ -43,7 +41,6 @@ public class Ene_shot : MonoBehaviour
                     StartCoroutine(trail(spw_trl, hit.point));
 
                     if(hit.transform.tag == "Player"){
-                        Debug.Log("lol");
                         if (Vector3.Distance(self.transform.position, ply.transform.position) < 15f)
                         {
                             if (ply != null)

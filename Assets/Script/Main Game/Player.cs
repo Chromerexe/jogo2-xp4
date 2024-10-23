@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public InputAction jump_in;
     public PlayerInput ply_in;
 
-    public static float life = 20;
+    public static float life = 100;
     public float lif;
     public float vel = 0;
     public float Air_vel = 0;
