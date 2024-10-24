@@ -16,10 +16,15 @@ public class Guns : MonoBehaviour
     public InputAction chng_wpn4;
     public InputAction last_wpn_in;
 
-    public int pis_amm = 20;
-    public int shot_amm = 5;
-    public int rock_amm = 5;
-    public int cross_amm = 10;
+    public static int pis_amm = 20;
+    public static int shot_amm = 20;
+    public static int rock_amm = 5;
+    public static int cross_amm = 10;
+
+    public int pis_amm2;
+    public int shot_amm2;
+    public int rock_amm2;
+    public int cross_amm2;
 
     public static bool has_rkt = false;
     public static bool has_cross = false;
@@ -92,6 +97,12 @@ public class Guns : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        pis_amm2 = pis_amm;
+        shot_amm2 = shot_amm;
+        rock_amm2 = rock_amm;
+        cross_amm2 = cross_amm;
+
         bool atiro = fire.WasPressedThisFrame();
         Vector2 chng= skrl.ReadValue<Vector2>();
         bool change_1 = chng_wpn1.WasPressedThisFrame();

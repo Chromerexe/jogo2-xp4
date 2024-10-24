@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -24,6 +25,7 @@ public class Smol_ene : MonoBehaviour
         canseeplayer();
         if (life <= 0)
         {
+            Battle1_logic.ene_def += 1;
             Destroy(gameObject);
         }
         if(canseeplayer() )

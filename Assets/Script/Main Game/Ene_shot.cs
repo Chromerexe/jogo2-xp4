@@ -33,8 +33,14 @@ public class Ene_shot : MonoBehaviour
 
             if (timer > 1)
             {
+                Vector3 dir = gun_p.transform.forward;
+                Vector3 spread = Vector3.zero;
+                spread += gun_p.transform.up * Random.Range(-1f, 1f);
+                spread += gun_p.transform.right * Random.Range(-1f, 1f);
 
-                if (Physics.Raycast(gun_p.transform.position, gun_p.transform.forward, out hit, range, ply_lm))
+                dir += spread.normalized * Random.Range(0f, 0.2f);
+
+                if (Physics.Raycast(gun_p.transform.position, dir, out hit, range, ply_lm))
                 {
 
                     TrailRenderer spw_trl = Instantiate(trl, gun_p2.transform.position, gun_p.transform.rotation);
