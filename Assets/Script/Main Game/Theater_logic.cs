@@ -7,6 +7,8 @@ public class Theater_logic : MonoBehaviour
 
     public MeshCollider ruble;
     public MeshCollider ruble2;
+    public Animator door1;
+    public Animator door2;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,6 +18,8 @@ public class Theater_logic : MonoBehaviour
     IEnumerator ruble_fall()
     {
         yield return new WaitForSeconds(1);
+        door1.SetTrigger("crash");
+        door2.SetTrigger("crash");
         ruble.enabled = true;
         ruble2.enabled = true;
     }
